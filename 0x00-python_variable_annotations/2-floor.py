@@ -4,4 +4,4 @@
 
 def floor(n: float) -> int:
     """returns the floor of the float"""
-    return round(n)
+    return int(n / 1)
