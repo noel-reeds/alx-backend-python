@@ -17,6 +17,4 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
                 if rd < delays[i] or rd == delays[i]:
                     delays.insert(i, rd)
                     break
-                else:
-                    i += 1
     return delays
