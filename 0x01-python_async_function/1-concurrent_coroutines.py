@@ -13,8 +13,11 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
         if len(delays) < 1:
             delays.append(rd)
         else:
-            for i in range(len(delays)):
-                if rd < delays[i] or rd == delays[i]:
-                    delays.insert(i, rd)
+            for d in delays:
+                if rd < d or rd == d:
+                    delays.insert(delays.index(d), rd)
+                    break
+                elif rd > delays[len(delays) - 1]:
+                    delays.append(rd)
                     break
     return delays
