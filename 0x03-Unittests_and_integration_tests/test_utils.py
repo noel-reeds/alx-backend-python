@@ -23,6 +23,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({}, ('a',), KeyError)
     ])
     def test_access_nested_map_exception(self, nested_map, path, exception):
+        """Tests for exception raised"""
         with self.assertRaises(exception):
             access_nested_map(nested_map, path)
 
@@ -34,6 +35,7 @@ class TestGetJson(unittest.TestCase):
         ('http://holberton.io', {"payload": False})
     ])
     def test_get_json(self, test_uri, params):
+        """Test for get_json function"""
         with patch('utils.requests.get') as mocked:
             mock = Mock()
             mock.json.return_value = params
@@ -47,13 +49,16 @@ class TestGetJson(unittest.TestCase):
 class TestMemoize(unittest.TestCase):
     """Tests for memoized method"""
     def test_memoize(self):
-
+        """Test for memoized property"""
         class TestClass:
+            """Test class"""
             def a_method(self):
+                """a_method"""
                 return 42
 
             @memoize
             def a_property(self):
+                """memoized property"""
                 return self.a_method()
 
         test_object = TestClass()
