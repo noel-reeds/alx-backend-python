@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import unittest
+from typing import Dict
 from unittest.mock import patch, Mock, PropertyMock as PM
 from client import GithubOrgClient
 import client as client_module
@@ -33,3 +34,16 @@ class TestGithubOrgClient(unittest.TestCase):
             _repos = github_client._public_repos_url
 
         self.assertEqual(_repos, 'some public repos')
+
+    def test_public_repos(self):
+        pass
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+    ])
+    def test_has_license(self, repo, _license, _bool):
+        """Test case for has_license method"""
+        self.assertIsNotNone(_license)
+        self.assertIsInstance(repo, Dict)
+        self.assertIs(GithubOrgClient.has_license(repo, _license), _bool)
