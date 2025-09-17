@@ -38,9 +38,11 @@ class TestGithubOrgClient(unittest.TestCase):
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
+        ({}, "", False)
     ])
     def test_has_license(self, repo, _license, _bool):
         """Test case for has_license method"""
         self.assertIsNotNone(_license)
         self.assertIsInstance(repo, Dict)
         self.assertIs(GithubOrgClient.has_license(repo, _license), _bool)
+
