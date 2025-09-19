@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 import unittest
 from typing import Dict
-from unittest.mock import patch, Mock, PropertyMock as PM
+from unittest.mock import patch, PropertyMock as pm
 from client import GithubOrgClient
-import client as client_module
 from parameterized import parameterized
 
 
@@ -13,13 +12,15 @@ class TestGithubOrgClient(unittest.TestCase):
         ('google', {'payload': True}),
         ('abc', {'payload': False}),
     ])
-    def test_org(self, org_name, response):
+    @patch('client.get_json')
+    def test_org(self, name, response, get_json):
         """Test cases"""
-        with patch('client.get_json', return_value=response) as mocked:
-            client = GithubOrgClient(org_name)
-            json = client.org
+        get_json.return_value = response
+        client = GithubOrgClient(name)
 
-        mocked.assert_called_once_with(client.ORG_URL.format(org=org_name))
+        json = client.org
+
+        get_json.assert_called_once_with(client.ORG_URL.format(org=name))
         self.assertEqual(json, response)
 
     @parameterized.expand([
@@ -29,7 +30,7 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos_url(self, name):
         """Tests"""
         github_client = GithubOrgClient(name)
-        with patch('client.GithubOrgClient.org', new_callable=PM) as mocked:
+        with patch('client.GithubOrgClient.org', new_callable=pm) as mocked:
             mocked.return_value = {'repos_url': 'some public repos'}
             _repos = github_client._public_repos_url
 
@@ -45,4 +46,3 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertIsNotNone(_license)
         self.assertIsInstance(repo, Dict)
         self.assertIs(GithubOrgClient.has_license(repo, _license), _bool)
-
